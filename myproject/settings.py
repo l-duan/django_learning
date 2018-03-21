@@ -31,14 +31,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.admin',  # admin Manage background site
+    'django.contrib.auth',  # identity authentication system
+    'django.contrib.contenttypes',  # Content type framework
+    'django.contrib.sessions',  # Session framework
+    'django.contrib.messages',  # Message framework
+    'django.contrib.staticfiles',  # static files manage framework
     'widget_tweaks',
     'boards',
+    'polls',
 ]
 
 MIDDLEWARE = [
