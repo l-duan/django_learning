@@ -2,7 +2,6 @@
 __auth__ = 'christian'
 
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
 from django.urls import resolve
 from django.test import TestCase
@@ -21,7 +20,7 @@ class SignUpTests(TestCase):
         self.assertEquals(self.response.status_code, 200)
 
     def test_signup_url_resolves_signup_view(self):
-        view = resolve('/signup/')
+        view = resolve('/accounts/signup/')
         self.assertEquals(view.func, signup)
 
     def test_csrf(self):
@@ -29,7 +28,16 @@ class SignUpTests(TestCase):
 
     def test_contains_form(self):
         form = self.response.context.get('form')
-        self.assertIsInstance(form, UserCreationForm)
+        self.assertIsInstance(form, SignUpForm)
+
+    def test_form_inputs(self):
+        '''
+        The view must contain five inputs: csrf, username, email, password1, password2
+        '''
+        self.assertContains(self.response, '<input', 5)
+        self.assertContains(self.response, 'type="text"', 1)
+        self.assertContains(self.response, 'type="email"', 1)
+        self.assertContains(self.response, 'type="password"', 2)
 
 
 class SuccessfulSignUpTests(TestCase):
@@ -56,22 +64,11 @@ class SuccessfulSignUpTests(TestCase):
     def test_user_authentication(self):
         '''
         Create a new request to an arbitrary page.
-        The resulting response should now have a `user` to its context,
-        after a successful sign up.
+        The resulting response should now have an `user` to its context, after a successful sign up.
         '''
         response = self.client.get(self.home_url)
         user = response.context.get('user')
         self.assertTrue(user.is_authenticated)
-
-    def test_form_inputs(self):
-        '''
-        The view must contain five inputs: csrf, username, email,
-        password1, password2
-        '''
-        self.assertContains(self.response, '<input', 5)
-        self.assertContains(self.response, 'type="text"', 1)
-        self.assertContains(self.response, 'type="email"', 1)
-        self.assertContains(self.response, 'type="password"', 2)
 
 
 class InvalidSignUpTests(TestCase):
@@ -91,11 +88,3 @@ class InvalidSignUpTests(TestCase):
 
     def test_dont_create_user(self):
         self.assertFalse(User.objects.exists())
-
-
-class SignUpFormTest(TestCase):
-    def test_form_has_fields(self):
-        form = SignUpForm()
-        expected = ['username', 'email', 'password1', 'password2',]
-        actual = list(form.fields)
-        self.assertSequenceEqual(expected, actual)

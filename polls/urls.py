@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 __auth__ = 'christian'
 
-from django.urls import path, re_path
+from django.urls import re_path
 from . import views
 
 app_name = 'polls'
