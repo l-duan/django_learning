@@ -19,7 +19,8 @@ from django.contrib import admin
 from boards import views
 
 urlpatterns = [
-    re_path('^$', views.home, name='home'),  # for regular expression.
+    # re_path('^$', views.home, name='home'),  # for regular expression.
+    re_path('^$', views.BoardListView.as_view(), name='home'),  # for regular expression.
     # re_path('^boards/(?P<pk>\d+)/$', views.board_topics, name='board_topics'),
     # re_path('^boards/(?P<pk>\d+)/new/$', views.new_topic, name='new_topic'),
     re_path('^accounts/', include('accounts.urls')),
