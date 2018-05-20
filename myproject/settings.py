@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',  # Session framework
     'django.contrib.messages',  # Message framework
     'django.contrib.staticfiles',  # static files manage framework
+    'django.contrib.humanize',  # use it to display date and time fields more naturally
     'widget_tweaks',
     'boards',
     'polls',
